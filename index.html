@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expence Tracker - Track Smarter, Split Easily & Save More</title>
+  <meta name="description" content="Expence Tracker is the ultimate offline-first expense manager and group bill splitting app for Android. Track daily expenses, manage roommate and trip splits, and secure your finances with biometrics.">
+  <meta name="keywords" content="expense tracker, budget app, bill splitter, group expenses, money manager, personal finance, offline expense tracker, android finance app">
+  <meta name="author" content="Expence Tracker Team">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Expence Tracker - Modern Expense & Group Settlement App">
+  <meta property="og:description" content="Effortlessly manage your daily budget and split group expenses without awkward IOUs. 100% private, offline-first, and ultra-secure.">
+  <meta property="og:image" content="play_store_assets/ChatGPT%20Image%20Sep%2026,%202026,%2005_39_45%20PM.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="play_store_assets/app_icon.png">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       Expence Tracker - Internal Design System & Styles
+       Modern Glassmorphic Dark Aesthetic with Vibrant Emerald & Indigo Accents
+       ========================================================================== */
+
+    :root {
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Outfit', 'Inter', sans-serif;
+
+      /* Color Palette */
+      --bg-dark: #090D16;
+      --bg-card: rgba(18, 24, 38, 0.75);
+      --bg-card-hover: rgba(26, 34, 52, 0.85);
+      --bg-card-border: rgba(255, 255, 255, 0.08);
+      --bg-card-border-glow: rgba(99, 102, 241, 0.4);
+
+      --primary: #6366F1;
+      --primary-light: #818CF8;
+      --primary-dark: #4F46E5;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+
+      --accent-green: #10B981;
+      --accent-green-glow: rgba(16, 185, 129, 0.3);
+      --accent-red: #EF4444;
+      --accent-purple: #A855F7;
+      --accent-amber: #F59E0B;
+
+      --text-white: #FFFFFF;
+      --text-primary: #F3F4F6;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+
+      --nav-bg: rgba(9, 13, 22, 0.85);
+      --nav-border: rgba(255, 255, 255, 0.06);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --radius-xl: 32px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 35px var(--primary-glow);
+      --shadow-glow-green: 0 0 35px var(--accent-green-glow);
+
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.65;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Ambient Aurora Glows */
+    .ambient-glow-1 {
+      position: fixed;
+      top: -15%;
+      left: 20%;
+      width: 650px;
+      height: 650px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, rgba(99, 102, 241, 0) 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      top: 40%;
+      right: -10%;
+      width: 550px;
+      height: 550px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-3 {
+      position: fixed;
+      bottom: 5%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, rgba(168, 85, 247, 0) 70%);
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      color: var(--text-white);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    p {
+      color: var(--text-secondary);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: var(--transition-fast);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 0%, #A5B4FC 50%, #6366F1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gradient-text-green {
+      background: linear-gradient(135deg, #FFFFFF 0%, #6EE7B7 50%, #10B981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Glassmorphism Card Style */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      transition: var(--transition-normal);
+    }
+
+    .glass-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.15);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 28px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition-bounce);
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+      color: var(--text-white);
+      box-shadow: 0 4px 20px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.55);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-white);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: var(--text-white);
+      box-shadow: 0 4px 20px var(--accent-green-glow);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--nav-border);
+      padding: 16px 0;
+      transition: var(--transition-normal);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text-white);
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px var(--primary-glow);
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      position: relative;
+      padding: 6px 0;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-white);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition-fast);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-white);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding-top: 145px;
+      padding-bottom: 80px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary-light);
+      width: fit-content;
+    }
+
+    .badge-pill .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .hero-title {
+      font-size: 3.4rem;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .hero-description {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--bg-card-border);
+    }
+
+    .stat-item h3 {
+      font-size: 1.6rem;
+      color: var(--text-white);
+      font-weight: 800;
+    }
+
+    .stat-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Phone Mockup Frame */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone-mockup-wrap {
+      position: relative;
+      width: 320px;
+      height: 640px;
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 46px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(99, 102, 241, 0.25);
+      backdrop-filter: blur(12px);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 36px;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Floating Badges */
+    .floating-badge {
+      position: absolute;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      background: rgba(18, 24, 38, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 2;
+      animation: floatBadge 4s ease-in-out infinite;
+    }
+
+    .badge-top-left {
+      top: 15%;
+      left: -50px;
+      animation-delay: 0s;
+    }
+
+    .badge-bottom-right {
+      bottom: 12%;
+      right: -40px;
+      animation-delay: 2s;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .badge-icon.green {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-green);
+    }
+
+    .badge-icon.purple {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--primary-light);
+    }
+
+    .badge-text-title {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .badge-text-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    /* Section Headers */
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 60px auto;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary-light);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+
+    .feature-icon-box.indigo {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818CF8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .feature-icon-box.emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .feature-icon-box.purple {
+      background: rgba(168, 85, 247, 0.15);
+      color: #C084FC;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .feature-icon-box.amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .feature-icon-box.rose {
+      background: rgba(244, 63, 94, 0.15);
+      color: #FB7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .feature-icon-box.cyan {
+      background: rgba(6, 182, 212, 0.15);
+      color: #38BDF8;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      color: var(--text-white);
+    }
+
+    .feature-card p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* Interactive Screenshot Showcase */
+    .showcase-wrapper {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .showcase-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .showcase-tab {
+      padding: 18px 22px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--bg-card-border);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .showcase-tab:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .showcase-tab.active {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+    }
+
+    .tab-num {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-light);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .showcase-tab.active .tab-num {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .tab-info h4 {
+      font-size: 1.05rem;
+      color: var(--text-white);
+      margin-bottom: 2px;
+    }
+
+    .tab-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .showcase-preview-frame {
+      position: relative;
+      max-width: 340px;
+      margin: 0 auto;
+      border-radius: 44px;
+      padding: 10px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-lg), 0 0 50px rgba(99, 102, 241, 0.2);
+    }
+
+    .showcase-img-holder {
+      width: 100%;
+      height: 640px;
+      border-radius: 36px;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+
+    .showcase-img-holder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .showcase-img-holder img.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Carousel */
+    .carousel-container {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      display: flex;
+      gap: 24px;
+      padding: 20px 4px 40px 4px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) transparent;
+    }
+
+    .carousel-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .carousel-container::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    .carousel-card {
+      flex: 0 0 240px;
+      scroll-snap-align: start;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow-md);
+      background: #000;
+      transition: var(--transition-normal);
+    }
+
+    .carousel-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-lg), 0 0 30px rgba(99, 102, 241, 0.25);
+    }
+
+    .carousel-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* How It Works Steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .step-card {
+      padding: 36px 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 20px auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .step-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+
+    .step-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    /* FAQ Section */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--bg-card-border);
+      background: var(--bg-card);
+      overflow: hidden;
+      transition: var(--transition-fast);
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      color: var(--text-white);
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .faq-toggle-icon {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+      color: var(--primary-light);
+    }
+
+    .faq-item.open .faq-toggle-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 26px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding-bottom: 22px;
+    }
+
+    /* CTA Banner */
+    .cta-section {
+      padding: 90px 0;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: var(--radius-xl);
+      padding: 60px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 50px rgba(99, 102, 241, 0.2);
+    }
+
+    .cta-banner h2 {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+    }
+
+    .cta-banner p {
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto 32px auto;
+      color: var(--text-secondary);
+    }
+
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--nav-border);
+      background: rgba(9, 13, 22, 0.95);
+      padding: 60px 0 30px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand p {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 300px;
+    }
+
+    .footer-col h4 {
+      font-size: 1rem;
+      margin-bottom: 18px;
+      color: var(--text-white);
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col ul a {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-col ul a:hover {
+      color: var(--primary-light);
+      padding-left: 4px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 50px;
+      }
+      .hero-content {
+        align-items: center;
+      }
+      .hero-description {
+        margin: 0 auto;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+      .hero-stats {
+        justify-content: center;
+      }
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .showcase-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-dark);
+        flex-direction: column;
+        padding: 24px;
+        border-bottom: 1px solid var(--nav-border);
+        gap: 18px;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .mobile-toggle {
+        display: block;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .section-title {
+        font-size: 2rem;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .floating-badge {
+        display: none;
+      }
+      .cta-banner {
+        padding: 40px 24px;
+      }
+      .cta-banner h2 {
+        font-size: 2rem;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow-2" aria-hidden="true"></div>
+  <div class="ambient-glow-3" aria-hidden="true"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="mainNavbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Expence Tracker Home">
+        <img src="play_store_assets/app_icon.png" alt="Expence Tracker Logo" width="42" height="42">
+        <span>Expence<span class="gradient-text-green">Tracker</span></span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="https://play.google.com/store/apps/details?id=com.appdev.expencetracker" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="navDownloadBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3.609 1.814L13.793 12 3.61 22.186c-.378-.372-.61-.904-.61-1.503V3.317c0-.599.232-1.131.609-1.503zM15.207 13.414l2.672 2.672-12.87 7.422 10.198-10.094zm0-2.828L5.009.492l12.87 7.422-2.672 2.672zm1.414 1.414l3.864-2.228c.849-.49.849-1.288 0-1.777l-3.864-2.228-2.122 2.121 2.122 2.122z"/>
+          </svg>
+          <span>Get the App</span>
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          &#9776;
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="badge-pill">
+          <span class="pulse-dot"></span>
+          <span>Next-Gen Personal Finance & Group Ledger</span>
+        </div>
+
+        <h1 class="hero-title">
+          Track Smarter. <br>
+          <span class="gradient-text">Split Together.</span> <br>
+          <span class="gradient-text-green">Save Confidently.</span>
+        </h1>
+
+        <p class="hero-description">
+          The ultimate personal budgeting and group settlement app built with modern precision. Manage daily cash flows, settle shared trip and roommate bills without stress, and maintain 100% financial privacy.
+        </p>
+
+        <div class="hero-actions">
+          <a href="https://play.google.com/store/apps/details?id=com.appdev.expencetracker" target="_blank" rel="noopener noreferrer" class="btn btn-success" id="heroDownloadBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.793 12 3.61 22.186c-.378-.372-.61-.904-.61-1.503V3.317c0-.599.232-1.131.609-1.503zM15.207 13.414l2.672 2.672-12.87 7.422 10.198-10.094zm0-2.828L5.009.492l12.87 7.422-2.672 2.672zm1.414 1.414l3.864-2.228c.849-.49.849-1.288 0-1.777l-3.864-2.228-2.122 2.121 2.122 2.122z"/>
+            </svg>
+            <span>Download for Android</span>
+          </a>
+          <a href="#features" class="btn btn-secondary">
+            <span>Explore Features</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>100%</h3>
+            <p>Private & Offline</p>
+          </div>
+          <div class="stat-item">
+            <h3>0%</h3>
+            <p>Hidden Fees</p>
+          </div>
+          <div class="stat-item">
+            <h3>Instant</h3>
+            <p>Group Splits</p>
+          </div>
+          <div class="stat-item">
+            <h3>Biometric</h3>
+            <p>Vault Security</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone Visual Mockup with Floating Elements -->
+      <div class="hero-visual">
+        <div class="phone-mockup-wrap">
+          <div class="phone-screen">
+            <img src="play_store_assets/Screenshot_1.png" alt="Expence Tracker Dashboard Preview" loading="eager">
+          </div>
+
+          <!-- Floating Badges -->
+          <div class="floating-badge badge-top-left" aria-hidden="true">
+            <div class="badge-icon green">&#x2714;</div>
+            <div>
+              <div class="badge-text-title">Income Logged</div>
+              <div class="badge-text-val">+$4,250.00</div>
+            </div>
+          </div>
+
+          <div class="floating-badge badge-bottom-right" aria-hidden="true">
+            <div class="badge-icon purple">&#x1F91D;</div>
+            <div>
+              <div class="badge-text-title">Roommate Split</div>
+              <div class="badge-text-val">All Settled Up</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Engineered for Simplicity</span>
+        <h2 class="section-title">Everything you need to master your money</h2>
+        <p class="section-subtitle">A comprehensive suite of budgeting, splitting, and security tools built right into a fast, fluid native experience.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="glass-card feature-card">
+          <div class="feature-icon-box emerald">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <h3>Daily Income & Expense Ledger</h3>
+          <p>Record transactions with a single tap. Categorize by Food, Rent, Transport, Entertainment, and more with instant visual feedback.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon-box indigo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3>Group Settlements & Shared Bills</h3>
+          <p>Going on a road trip, living with roommates, or organizing an office lunch? Split bills equally or custom-share with zero confusion.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon-box purple">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+          </div>
+          <h3>Visual Analytics & Reports</h3>
+          <p>Gain crystal-clear insights into where your money flows. Visualize month-over-month trends, category breakdowns, and net balances.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon-box amber">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <h3>Biometric Fingerprint Lock</h3>
+          <p>Your financial diary is nobody else's business. Enable Android Biometric Prompt to secure the app with your fingerprint or PIN.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon-box rose">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <h3>Multi-Currency Support</h3>
+          <p>Seamlessly change between USD ($), EUR (€), GBP (£), PKR (₨), INR (₹), and more to match your local or travel currency effortlessly.</p>
+        </div>
+
+        <div class="glass-card feature-card">
+          <div class="feature-icon-box cyan">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+          <h3>100% Offline Independence</h3>
+          <p>No mandatory internet, no cloud dependencies, and zero tracking. Your private database lives right on your device for unmatched speed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Screenshot Showcase -->
+  <section class="section" id="screenshots">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Interactive Preview</span>
+        <h2 class="section-title">Designed with modern visual elegance</h2>
+        <p class="section-subtitle">Click through the real app screens below to see how Expence Tracker simplifies your money management.</p>
+      </div>
+
+      <div class="showcase-wrapper">
+        <!-- Showcase Navigation Tabs -->
+        <div class="showcase-tabs" role="tablist">
+          <div class="showcase-tab active" data-target="screen-1" role="tab" tabindex="0">
+            <div class="tab-num">01</div>
+            <div class="tab-info">
+              <h4>Dashboard & Account Balance</h4>
+              <p>Live summary of Total Balance, Income, and Monthly Spending.</p>
+            </div>
+          </div>
+
+          <div class="showcase-tab" data-target="screen-2" role="tab" tabindex="0">
+            <div class="tab-num">02</div>
+            <div class="tab-info">
+              <h4>Quick Transaction Entry</h4>
+              <p>Lightning-fast bottom sheet with animated category selection.</p>
+            </div>
+          </div>
+
+          <div class="showcase-tab" data-target="screen-3" role="tab" tabindex="0">
+            <div class="tab-num">03</div>
+            <div class="tab-info">
+              <h4>Group Settlement Hub</h4>
+              <p>Manage shared groups like Apartment Rent, Euro Trip, and Dinners.</p>
+            </div>
+          </div>
+
+          <div class="showcase-tab" data-target="screen-4" role="tab" tabindex="0">
+            <div class="tab-num">04</div>
+            <div class="tab-info">
+              <h4>Group Ledger & Debt Solver</h4>
+              <p>Clear calculation of who owes whom with one-tap settlement.</p>
+            </div>
+          </div>
+
+          <div class="showcase-tab" data-target="screen-5" role="tab" tabindex="0">
+            <div class="tab-num">05</div>
+            <div class="tab-info">
+              <h4>Analytics & Category Breakdown</h4>
+              <p>Insightful charts revealing spending habits and savings trends.</p>
+            </div>
+          </div>
+
+          <div class="showcase-tab" data-target="screen-6" role="tab" tabindex="0">
+            <div class="tab-num">06</div>
+            <div class="tab-info">
+              <h4>Custom Settings & Security</h4>
+              <p>Biometrics, currency formatting, dark aesthetics, and backup options.</p>
+            </div>
+          </div>
+
+          <div class="showcase-tab" data-target="screen-7" role="tab" tabindex="0">
+            <div class="tab-num">07</div>
+            <div class="tab-info">
+              <h4>Detailed Transactions Ledger</h4>
+              <p>Filter by date, category, or type to inspect every single transaction.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Mockup Display Frame -->
+        <div class="showcase-preview-frame">
+          <div class="showcase-img-holder">
+            <img src="play_store_assets/Screenshot_1.png" alt="Expence Tracker Dashboard" id="screen-1" class="active">
+            <img src="play_store_assets/Screenshot_2.png" alt="Add Transaction Sheet" id="screen-2">
+            <img src="play_store_assets/Screenshot_3.png" alt="Group Settlement Hub" id="screen-3">
+            <img src="play_store_assets/Screenshot_4.png" alt="Group Expense Ledger" id="screen-4">
+            <img src="play_store_assets/Screenshot_5.png" alt="Analytics Breakdown" id="screen-5">
+            <img src="play_store_assets/Screenshot_6.png" alt="Settings & Biometrics" id="screen-6">
+            <img src="play_store_assets/Screenshot_7.png" alt="Detailed Transactions Ledger" id="screen-7">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal Scroll Carousel Gallery -->
+  <section class="section" style="padding-top: 20px;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 30px;">
+        <span class="section-tag">Play Store Screenshots</span>
+        <h2 class="section-title">Explore all app screens</h2>
+        <p class="section-subtitle">Swipe or scroll horizontally through the complete visual collection.</p>
+      </div>
+
+      <div class="carousel-container" aria-label="Screenshots Carousel">
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_1.png" alt="Screenshot 1: Overview" loading="lazy">
+        </div>
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_2.png" alt="Screenshot 2: Add Expense" loading="lazy">
+        </div>
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_3.png" alt="Screenshot 3: Groups" loading="lazy">
+        </div>
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_4.png" alt="Screenshot 4: Group Splits" loading="lazy">
+        </div>
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_5.png" alt="Screenshot 5: Analytics" loading="lazy">
+        </div>
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_6.png" alt="Screenshot 6: Settings" loading="lazy">
+        </div>
+        <div class="carousel-card">
+          <img src="play_store_assets/Screenshot_7.png" alt="Screenshot 7: Ledger" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Simple & Seamless</span>
+        <h2 class="section-title">How Expence Tracker works in 3 easy steps</h2>
+        <p class="section-subtitle">Zero complicated setups. Download, open, and achieve financial clarity in under two minutes.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="glass-card step-card">
+          <div class="step-number">1</div>
+          <h3>Log Transactions Instantly</h3>
+          <p>Tap the prominent plus button, type the amount, pick an icon category, and save. Track both income and expenses in real-time.</p>
+        </div>
+
+        <div class="glass-card step-card">
+          <div class="step-number">2</div>
+          <h3>Form Groups & Split Bills</h3>
+          <p>Create groups for trips, rent, or dining out. Add member names and record who paid. The app automatically simplifies the debt calculations.</p>
+        </div>
+
+        <div class="glass-card step-card">
+          <div class="step-number">3</div>
+          <h3>Settle Up & Analyze</h3>
+          <p>Mark balances as settled with a single tap. Review monthly category breakdowns to eliminate wasteful spending and build savings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Frequently Asked Questions</span>
+        <h2 class="section-title">Got questions? We've got answers</h2>
+        <p class="section-subtitle">Everything you need to know about privacy, security, and using Expence Tracker.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-question">
+            <span>Is Expence Tracker completely free to use?</span>
+            <span class="faq-toggle-icon">&#10010;</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! Expence Tracker is free to download and use. You can track unlimited transactions, create unlimited groups, split shared expenses, and access financial analytics without any subscription walls.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my financial data stored on your servers?</span>
+            <span class="faq-toggle-icon">&#10010;</span>
+          </button>
+          <div class="faq-answer">
+            <p>No. Expence Tracker operates on an offline-first architecture. All your transaction records, groups, and balances are stored securely in a local database directly on your device. We do not sell or upload your personal financial ledger to any external servers.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does group bill splitting work?</span>
+            <span class="faq-toggle-icon">&#10010;</span>
+          </button>
+          <div class="faq-answer">
+            <p>You can create a group (such as "Roommates" or "Weekend Trip"), add members, and record any group expense indicating who paid and who participated. The app computes the net balance for each person and displays clean settlement instructions (e.g. "Alex owes John $35").</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I lock the app with my fingerprint?</span>
+            <span class="faq-toggle-icon">&#10010;</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. In the Settings tab, you can enable Biometric Security. Once enabled, Expence Tracker utilizes the Android BiometricPrompt hardware security module to require your fingerprint or device PIN before opening.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I switch currencies?</span>
+            <span class="faq-toggle-icon">&#10010;</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. You can select your preferred default currency (USD $, EUR €, GBP £, PKR ₨, INR ₹, and more) in the Settings screen at any time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Call To Action Banner -->
+  <section class="cta-section" id="download">
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Start Tracking Smarter Today</h2>
+        <p>Take charge of your personal budget and split group expenses without awkward conversations. Free, private, and beautifully crafted for Android.</p>
+        <div class="cta-buttons">
+          <a href="https://play.google.com/store/apps/details?id=com.appdev.expencetracker" target="_blank" rel="noopener noreferrer" class="btn btn-success" style="font-size: 1.05rem; padding: 15px 36px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3.609 1.814L13.793 12 3.61 22.186c-.378-.372-.61-.904-.61-1.503V3.317c0-.599.232-1.131.609-1.503zM15.207 13.414l2.672 2.672-12.87 7.422 10.198-10.094zm0-2.828L5.009.492l12.87 7.422-2.672 2.672zm1.414 1.414l3.864-2.228c.849-.49.849-1.288 0-1.777l-3.864-2.228-2.122 2.121 2.122 2.122z"/>
+            </svg>
+            <span>Get on Google Play</span>
+          </a>
+          <a href="privacy.html" class="btn btn-secondary" style="font-size: 1.05rem; padding: 15px 32px;">
+            <span>Read Privacy Policy</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand">
+            <img src="play_store_assets/app_icon.png" alt="Expence Tracker Logo" width="38" height="38">
+            <span>Expence<span class="gradient-text-green">Tracker</span></span>
+          </a>
+          <p>Next-generation expense tracking and group settlement ledger for Android. Designed for speed, aesthetic beauty, and complete financial privacy.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#screenshots">Screenshots</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal & Safety</h4>
+          <ul>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="privacy.html#data-security">Data Protection</a></li>
+            <li><a href="privacy.html#biometric-policy">Biometrics Policy</a></li>
+            <li><a href="privacy.html#contact-us">Contact Developer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Download App</h4>
+          <ul>
+            <li><a href="https://play.google.com/store/apps/details?id=com.appdev.expencetracker" target="_blank" rel="noopener noreferrer">Google Play Store &rarr;</a></li>
+            <li><a href="#features">100% Offline Database</a></li>
+            <li><a href="#features">Group Bill Splitting</a></li>
+            <li><a href="#features">Biometric Security</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Expence Tracker. All rights reserved.</p>
+        <p>Built with Android Jetpack & Modern Web Standards</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Internal JavaScript Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Toggle
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navLinks = document.getElementById('navLinks');
+
+      if (mobileToggle && navLinks) {
+        mobileToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('open');
+          const isOpen = navLinks.classList.contains('open');
+          mobileToggle.setAttribute('aria-expanded', isOpen);
+          mobileToggle.innerHTML = isOpen ? '&#10005;' : '&#9776;';
+        });
+
+        navLinks.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+            mobileToggle.innerHTML = '&#9776;';
+            mobileToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // 2. Interactive Screenshot Tabs Showcase
+      const showcaseTabs = document.querySelectorAll('.showcase-tab');
+      const showcaseImages = document.querySelectorAll('.showcase-img-holder img');
+
+      if (showcaseTabs.length > 0 && showcaseImages.length > 0) {
+        showcaseTabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const targetId = tab.getAttribute('data-target');
+
+            showcaseTabs.forEach((t) => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            showcaseImages.forEach((img) => {
+              if (img.id === targetId) {
+                img.classList.add('active');
+              } else {
+                img.classList.remove('active');
+              }
+            });
+          });
+        });
+      }
+
+      // 3. FAQ Accordion Interaction
+      const faqQuestions = document.querySelectorAll('.faq-question');
+
+      if (faqQuestions.length > 0) {
+        faqQuestions.forEach((button) => {
+          button.addEventListener('click', () => {
+            const faqItem = button.closest('.faq-item');
+            const isOpen = faqItem.classList.contains('open');
+
+            document.querySelectorAll('.faq-item').forEach((item) => {
+              item.classList.remove('open');
+            });
+
+            if (!isOpen) {
+              faqItem.classList.add('open');
+            }
+          });
+        });
+      }
+
+      // 4. Navbar Background Blur on Scroll
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 40) {
+            navbar.style.background = 'rgba(9, 13, 22, 0.96)';
+            navbar.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+          } else {
+            navbar.style.background = 'var(--nav-bg)';
+            navbar.style.boxShadow = 'none';
+          }
+        });
+      }
+
+      // 5. Google Play Store redirect enhancement for all Play Store buttons
+      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.appdev.expencetracker';
+      document.querySelectorAll('a[href*="play.google.com"]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          // Normal link navigation handles opening in new tab
+          console.log('Redirecting user to Google Play Store:', playStoreUrl);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
